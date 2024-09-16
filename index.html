@@ -5,9 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Live Polling with Firebase</title>
 
-    <!-- Firebase App SDK (這是必須的) -->
+    <!-- Firebase SDK 加載 -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <!-- Firebase Realtime Database SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
 </head>
 <body>
@@ -21,6 +20,7 @@
     <button onclick="submitVote('Python')">Python</button>
     <button onclick="submitVote('C++')">C++</button>
 
+    <!-- Firebase 初始化和邏輯 -->
     <script>
         // Firebase 配置
         const firebaseConfig = {
