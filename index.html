@@ -51,4 +51,13 @@
         });
 
         db.ref('votes/Python').on('value', function(snapshot) {
-            document.getElementById('py-v​⬤
+            document.getElementById('py-votes').innerText = 'Python: ' + (snapshot.val() || 0);
+        });
+
+        db.ref('votes/C++').on('value', function(snapshot) {
+            document.getElementById('cpp-votes').innerText = 'C++: ' + (snapshot.val() || 0);
+        });
+    </script>
+
+</body>
+</html>
