@@ -1,40 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Polling with Firebase</title>
 
-<!-- 加載 Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+    <!-- Firebase App SDK (這是必須的) -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <!-- Firebase Realtime Database SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+</head>
+<body>
 
-<!-- 初始化 Firebase 和寫入/讀取數據 -->
-<script>
-    // Firebase 配置
-    const firebaseConfig = {
-        apiKey: "AIzaSyAbn4bCHOlSKtmfHM7MNvqIWFAAdCNtpb8",
+    <h1>Live Results</h1>
+    <div id="js-votes">JavaScript: 0</div>
+    <div id="py-votes">Python: 0</div>
+    <div id="cpp-votes">C++: 0</div>
+
+    <button onclick="submitVote('JavaScript')">JavaScript</button>
+    <button onclick="submitVote('Python')">Python</button>
+    <button onclick="submitVote('C++')">C++</button>
+
+    <script>
+        // Firebase 配置
+        const firebaseConfig = {
+            apiKey: "AIzaSyAbn4bCHOlSKtmfHM7MNvqIWFAAdCNtpb8",
         authDomain: "service-be542.firebaseapp.com",
         databaseURL: "https://service-be542.firebaseio.com",
         projectId: "service-be542",
         storageBucket: "service-be542.appspot.com",
         messagingSenderId: "1063778963717",
         appId: "1:1063778963717:web:390830d34f4a10a4da76c"
-    };
+        };
 
-    // 初始化 Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-    
-    // Firebase 讀寫操作
-    function submitVote(choice) {
-        const voteRef = db.ref('votes/' + choice);
-        voteRef.transaction(function(currentVotes) {
-            return (currentVotes || 0) + 1;
+        // 初始化 Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // 提交投票
+        function submitVote(choice) {
+            const voteRef = db.ref('votes/' + choice);
+            voteRef.transaction(function(currentVotes) {
+                return (currentVotes || 0) + 1;
+            });
+        }
+
+        // 實時更新結果
+        db.ref('votes/JavaScript').on('value', function(snapshot) {
+            document.getElementById('js-votes').innerText = 'JavaScript: ' + (snapshot.val() || 0);
         });
-    }
 
-    db.ref('votes/JavaScript').on('value', function(snapshot) {
-        document.getElementById('js-votes').innerText = 'JavaScript: ' + (snapshot.val() || 0);
-    });
-    db.ref('votes/Python').on('value', function(snapshot) {
-        document.getElementById('py-votes').innerText = 'Python: ' + (snapshot.val() || 0);
-    });
-    db.ref('votes/C++').on('value', function(snapshot) {
-        document.getElementById('cpp-votes').innerText = 'C++: ' + (snapshot.val() || 0);
-    });
-</script>
+        db.ref('votes/Python').on('value', function(snapshot) {
+            document.getElementById('py-v​⬤
