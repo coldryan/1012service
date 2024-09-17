@@ -2,12 +2,12 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>实时投票</title>
+  <title>投票</title>
 </head>
 <body>
   <!-- 您的网页内容 -->
-  <h1>实时投票</h1>
-  <p>您最喜欢的编程语言是？</p>
+  <h1>投票</h1>
+  <p>您最喜歡的programming language是？</p>
   <button onclick="vote('JavaScript')">JavaScript</button>
   <button onclick="vote('Python')">Python</button>
   <button onclick="vote('Java')">Java</button>
@@ -49,7 +49,7 @@
       });
     }
 
-    // 实时显示投票结果
+    // real time result
     const resultsDiv = document.getElementById('results');
     const resultsRef = ref(database, 'polls/favoriteLanguage');
 
@@ -61,7 +61,7 @@
           resultsDiv.innerHTML += `<p>${option}: ${data[option]} 票</p>`;
         }
       } else {
-        resultsDiv.innerHTML = '<p>暂无投票结果。</p>';
+        resultsDiv.innerHTML = '<p>no投票结果。</p>';
       }
     });
   </script>
