@@ -1,63 +1,69 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Polling with Firebase</title>
-
-    <!-- Firebase SDK 加載 -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+  <meta charset="UTF-8">
+  <title>实时投票</title>
 </head>
 <body>
+  <!-- 您的网页内容 -->
+  <h1>实时投票</h1>
+  <p>您最喜欢的编程语言是？</p>
+  <button onclick="vote('JavaScript')">JavaScript</button>
+  <button onclick="vote('Python')">Python</button>
+  <button onclick="vote('Java')">Java</button>
+  <!-- 显示结果的区域 -->
+  <div id="results"></div>
 
-    <h1>Live Results</h1>
-    <div id="js-votes">JavaScript: 0</div>
-    <div id="py-votes">Python: 0</div>
-    <div id="cpp-votes">C++: 0</div>
+  <!-- Firebase SDK和您的脚本 -->
+  <script type="module">
+    // 导入Firebase核心和数据库函数
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+    import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
 
-    <button onclick="submitVote('JavaScript')">JavaScript</button>
-    <button onclick="submitVote('Python')">Python</button>
-    <button onclick="submitVote('C++')">C++</button>
+    // 您的Firebase配置
+    const firebaseConfig = {
+  apiKey: "AIzaSyCRol5-bfvuLJ_Tl3HzhE1_JfzIU837wsk",
+  authDomain: "livepollingapp.firebaseapp.com",
+  databaseURL: "https://livepollingapp-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "livepollingapp",
+  storageBucket: "livepollingapp.appspot.com",
+  messagingSenderId: "512425859331",
+  appId: "1:512425859331:web:4e8e84385defd5637cf136",
+  measurementId: "G-EDJ488Y4JK"
+    };
 
-    <!-- Firebase 初始化和邏輯 -->
-    <script>
-        // Firebase 配置
-        const firebaseConfig = {
-            apiKey: "AIzaSyAbn4bCHOlSKtmfHM7MNvqIWFAAdCNtpb8",
-        authDomain: "service-be542.firebaseapp.com",
-        databaseURL: "https://service-be542.firebaseio.com",
-        projectId: "service-be542",
-        storageBucket: "service-be542.appspot.com",
-        messagingSenderId: "1063778963717",
-        appId: "1:1063778963717:web:390830d34f4a10a4da76c"
-        };
+    // 初始化Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
 
-        // 初始化 Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
+    // 投票函数
+    window.vote = function(option) {
+      const pollRef = ref(database, 'polls/favoriteLanguage/' + option);
 
-        // 提交投票
-        function submitVote(choice) {
-            const voteRef = db.ref('votes/' + choice);
-            voteRef.transaction(function(currentVotes) {
-                return (currentVotes || 0) + 1;
-            });
+      runTransaction(pollRef, (currentVotes) => {
+        return (currentVotes || 0) + 1;
+      }).then(() => {
+        console.log('投票成功！');
+      }).catch((error) => {
+        console.error('投票失败：', error);
+      });
+    }
+
+    // 实时显示投票结果
+    const resultsDiv = document.getElementById('results');
+    const resultsRef = ref(database, 'polls/favoriteLanguage');
+
+    onValue(resultsRef, (snapshot) => {
+      const data = snapshot.val();
+      resultsDiv.innerHTML = '';
+      if (data) {
+        for (let option in data) {
+          resultsDiv.innerHTML += `<p>${option}: ${data[option]} 票</p>`;
         }
-
-        // 實時更新結果
-        db.ref('votes/JavaScript').on('value', function(snapshot) {
-            document.getElementById('js-votes').innerText = 'JavaScript: ' + (snapshot.val() || 0);
-        });
-
-        db.ref('votes/Python').on('value', function(snapshot) {
-            document.getElementById('py-votes').innerText = 'Python: ' + (snapshot.val() || 0);
-        });
-
-        db.ref('votes/C++').on('value', function(snapshot) {
-            document.getElementById('cpp-votes').innerText = 'C++: ' + (snapshot.val() || 0);
-        });
-    </script>
-
+      } else {
+        resultsDiv.innerHTML = '<p>暂无投票结果。</p>';
+      }
+    });
+  </script>
 </body>
 </html>
