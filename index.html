@@ -6,13 +6,39 @@
 </head>
 <body>
   <!-- 您的网页内容 -->
-  <h1>投票</h1>
-  <p>您最喜歡的programming language是？</p>
-  <button onclick="vote('JavaScript')">JavaScript</button>
-  <button onclick="vote('Python')">Python</button>
-  <button onclick="vote('Java')">Java</button>
-  <!-- 显示结果的区域 -->
-  <div id="results"></div>
+    <h1>投票</h1>
+      <!-- 问题1 -->
+      <p>第一次嚟華基堂？</p>
+      <button onclick="vote('q1', '是')">是</button>
+      <button onclick="vote('q1', '否')">否</button>
+      <!-- 结果显示区域 -->
+      <div id="results-q1"></div>
+
+      <!-- 问题2 -->
+      <p>係咪基督徒？</p>
+      <button onclick="vote('q2', '是')">是</button>
+      <button onclick="vote('q2', '否')">否</button>
+      <div id="results-q2"></div>
+
+      <!-- 问题3 -->
+      <p>有冇喺社交媒體 (IG、Facebook) Post過相？</p>
+      <button onclick="vote('q3', '是')">是</button>
+      <button onclick="vote('q3', '否')">否</button>
+      <div id="results-q3"></div>
+
+      <!-- 问题4 -->
+      <p>通常 Post 乜嘢？</p>
+      <button onclick="vote('q4', '自拍')">自拍</button>
+      <button onclick="vote('q4', '美食')">美食</button>
+      <button onclick="vote('q4', '風景')">風景</button>
+      <button onclick="vote('q4', '仔女')">仔女</button>
+      <div id="results-q4"></div>
+
+      <!-- 问题5 -->
+      <p>Post有自己樣嘅相，有冇用Filter？</p>
+      <button onclick="vote('q5', '是')">是</button>
+      <button onclick="vote('q5', '否')">否</button>
+      <div id="results-q5"></div>
 
   <!-- Firebase SDK和您的脚本 -->
   <script type="module">
@@ -32,26 +58,27 @@
   measurementId: "G-EDJ488Y4JK"
     };
 
-    // 初始化Firebase
-    const app = initializeApp(firebaseConfig);
-    const database = getDatabase(app);
+    / 初始化Firebase
+  const app = initializeApp(firebaseConfig);
+  const database = getDatabase(app);
 
-    // 投票函数
-    window.vote = function(option) {
-      const pollRef = ref(database, 'polls/favoriteLanguage/' + option);
+  // 投票函数
+  window.vote = function(questionId, option) {
+    const pollRef = ref(database, 'polls/' + questionId + '/' + option);
 
-      runTransaction(pollRef, (currentVotes) => {
-        return (currentVotes || 0) + 1;
-      }).then(() => {
-        console.log('投票成功！');
-      }).catch((error) => {
-        console.error('投票失败：', error);
-      });
-    }
+    runTransaction(pollRef, (currentVotes) => {
+      return (currentVotes || 0) + 1;
+    }).then(() => {
+      console.log('投票成功！');
+    }).catch((error) => {
+      console.error('投票失败：', error);
+    });
+  }
 
-    // real time result
-    const resultsDiv = document.getElementById('results');
-    const resultsRef = ref(database, 'polls/favoriteLanguage');
+  // 创建结果监听函数
+  function setupResultListener(questionId) {
+    const resultsDiv = document.getElementById('results-' + questionId);
+    const resultsRef = ref(database, 'polls/' + questionId);
 
     onValue(resultsRef, (snapshot) => {
       const data = snapshot.val();
@@ -61,9 +88,17 @@
           resultsDiv.innerHTML += `<p>${option}: ${data[option]} 票</p>`;
         }
       } else {
-        resultsDiv.innerHTML = '<p>no投票结果。</p>';
+        resultsDiv.innerHTML = '<p>暂无投票结果。</p>';
       }
     });
-  </script>
+  }
+
+  // 为每个问题设置结果监听器
+  setupResultListener('q1');
+  setupResultListener('q2');
+  setupResultListener('q3');
+  setupResultListener('q4');
+  setupResultListener('q5');
+</script>
 </body>
 </html>
