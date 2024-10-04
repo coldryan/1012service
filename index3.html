@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>重置投票</title>
+</head>
+<body>
+  <h1>重置投票數據</h1>
+
+  <!-- Firebase SDK和您的脚本 -->
+  <script type="module">
+    // 导入Firebase核心和数据库函数
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
+
+    // Firebase配置
+    const firebaseConfig = {
+      apiKey: "AIzaSyCRol5-bfvuLJ_Tl3HzhE1_JfzIU837wsk",
+      authDomain: "livepollingapp.firebaseapp.com",
+      databaseURL: "https://livepollingapp-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "livepollingapp",
+      storageBucket: "livepollingapp.appspot.com",
+      messagingSenderId: "512425859331",
+      appId: "1:512425859331:web:4e8e84385defd5637cf136",
+      measurementId: "G-EDJ488Y4JK"
+    };
+
+    // 初始化Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    // 重置所有投票结果的函数
+    window.resetVotes = function() {
+      const pollQuestions = ['q1', 'q2', 'q3'];
+      pollQuestions.forEach((questionId) => {
+        const questionRef = ref(database, 'polls/' + questionId);
+        set(questionRef, null) // 将投票数据重置为空
+          .then(() => {
+            console.log(`${questionId} 的投票数据已重置！`);
+          })
+          .catch((error) => {
+            console.error(`${questionId} 的重置失败：`, error);
+          });
+      });
+    }
+  </script>
+
+  <!-- 添加一个“重置”按钮 -->
+  <button onclick="resetVotes()">重置所有投票</button>
+
+  <!-- 链接到其他页面 -->
+  <a href="index.html">返回投票頁面</a>
+  <a href="results.html">查看投票结果</a>
+</body>
+</html>
