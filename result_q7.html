@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>耶穌有無驚過？ - 結果</title>
+</head>
+<body>
+  <h1>耶穌有無驚過？ - 結果</h1>
+
+  <div id="q7-results"></div>
+
+  <!-- Firebase SDK和您的脚本 -->
+  <script type="module">
+    // 导入Firebase核心和数据库函数
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
+
+    // Firebase配置
+    const firebaseConfig = {
+      apiKey: "AIzaSyCRol5-bfvuLJ_Tl3HzhE1_JfzIU837wsk",
+      authDomain: "livepollingapp.firebaseapp.com",
+      databaseURL: "https://livepollingapp-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "livepollingapp",
+      storageBucket: "livepollingapp.appspot.com",
+      messagingSenderId: "512425859331",
+      appId: "1:512425859331:web:4e8e84385defd5637cf136",
+      measurementId: "G-EDJ488Y4JK"
+    };
+
+    // 初始化Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    // 创建结果监听函数
+    function setupResultListener(questionId) {
+      const resultsDiv = document.getElementById('q7-results');
+      const resultsRef = ref(database, 'polls/' + questionId);
+
+      onValue(resultsRef, (snapshot) => {
+        const data = snapshot.val();
+        resultsDiv.innerHTML = '';
+        if (data) {
+          for (let option in data) {
+            resultsDiv.innerHTML += `<p>${option}: ${data[option]} 票</p>`;
+          }
+        } else {
+          resultsDiv.innerHTML = '<p>暂无投票结果。</p>';
+        }
+      });
+    }
+
+    // 设置监听器显示投票结果
+    setupResultListener('q7');
+  </script>
+</body>
+</html>
