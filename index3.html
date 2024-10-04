@@ -31,15 +31,15 @@
 
     // 重置所有投票结果的函数
     window.resetVotes = function() {
-      const pollQuestions = ['q1', 'q2', 'q3', 'q4', 'q5'];
+      const pollQuestions = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7'];
       pollQuestions.forEach((questionId) => {
         const questionRef = ref(database, 'polls/' + questionId);
         set(questionRef, null) // 将投票数据重置为空
           .then(() => {
-            console.log(`${questionId} 已重置！`);
+            console.log(`${questionId} 的投票数据已重置！`);
           })
           .catch((error) => {
-            console.error(`${questionId} 重置失败：`, error);
+            console.error(`${questionId} 的重置失败：`, error);
           });
       });
     }
