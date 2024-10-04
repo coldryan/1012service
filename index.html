@@ -90,5 +90,19 @@
       });
     }
   </script>
+
+<script>
+  // 延遲 20 秒後啟用按鈕
+  setTimeout(() => {
+    const nextQuestionBtn = document.getElementById('next-question-btn');
+    nextQuestionBtn.classList.remove('disabled-button');
+    nextQuestionBtn.disabled = false;
+    nextQuestionBtn.innerText = '前往下一個問題 (Q6)';
+    nextQuestionBtn.onclick = function() {
+      window.location.href = 'question_q6.html'; // 指向 Q6 的 HTML 頁面
+    };
+  }, 20000); // 20秒後啟用按鈕
+</script>
+
 </body>
 </html>
