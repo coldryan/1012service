@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>情緒反應投票</title>
+  <style>
+    .voted {
+      background-color: #4caf50; /* 綠色表示已投票 */
+      color: white;
+      cursor: not-allowed;
+    }
+    .voted:disabled {
+      background-color: #4caf50;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>當人面對黑暗，內心有咩情緒反應？</h1>
+
+  <button id="q6-happy" onclick="vote('q6', '快樂', 'q6-happy', 'q6-msg')">快樂</button>
+  <button id="q6-sad" onclick="vote('q6', '傷心', 'q6-sad', 'q6-msg')">傷心</button>
+  <button id="q6-surprised" onclick="vote('q6', '驚訝', 'q6-surprised', 'q6-msg')">驚訝</button>
+  <button id="q6-fear" onclick="vote('q6', '恐懼', 'q6-fear', 'q6-msg')">恐懼</button>
+  <button id="q6-angry" onclick="vote('q6', '生氣', 'q6-angry', 'q6-msg')">生氣</button>
+  <button id="q6-disgust" onclick="vote('q6', '噁心', 'q6-disgust', 'q6-msg')">噁心</button>
+  <p id="q6-msg"></p>
+
+  <!-- Firebase SDK和您的脚本 -->
+  <script type="module">
+    // 导入Firebase核心和数据库函数
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+    import { getDatabase, ref, runTransaction } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
+
+    // Firebase配置
+    const firebaseConfig = {
+      apiKey: "AIzaSyCRol5-bfvuLJ_Tl3HzhE1_JfzIU837wsk",
+      authDomain: "livepollingapp.firebaseapp.com",
+      databaseURL: "https://livepollingapp-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "livepollingapp",
+      storageBucket: "livepollingapp.appspot.com",
+      messagingSenderId: "512425859331",
+      appId: "1:512425859331:web:4e8e84385defd5637cf136",
+      measurementId: "G-EDJ488Y4JK"
+    };
+
+    // 初始化Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    // 投票函数
+    window.vote = function(questionId, option, buttonId, messageId) {
+      const pollRef = ref(database, 'polls/' + questionId + '/' + option);
+
+      runTransaction(pollRef, (currentVotes) => {
+        return (currentVotes || 0) + 1;
+      }).then(() => {
+        // 顯示投票成功的消息
+        document.getElementById(messageId).innerText = '投票成功！';
+        // 將按鈕設為深色，並禁用按鈕
+        const button = document.getElementById(buttonId);
+        button.classList.add('voted');
+        button.disabled = true;
+      }).catch((error) => {
+        console.error('投票失败：', error);
+      });
+    }
+  </script>
+</body>
+</html>
