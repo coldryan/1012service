@@ -32,11 +32,14 @@
     // 重置所有投票结果的函数
     window.resetVotes = function() {
       const pollQuestions = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7'];
+
       pollQuestions.forEach((questionId) => {
         const questionRef = ref(database, 'polls/' + questionId);
-        set(questionRef, null) // 将投票数据重置为空
+
+        // 将投票数据重置为空对象，确保可以重置成功
+        set(questionRef, {})
           .then(() => {
-            console.log(`${questionId} 的投票数据已重置！`);
+            console.log(`${questionId} 的投票数据已成功重置！`);
           })
           .catch((error) => {
             console.error(`${questionId} 的重置失败：`, error);
