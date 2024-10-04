@@ -3,101 +3,88 @@
 <head>
   <meta charset="UTF-8">
   <title>投票</title>
+  <style>
+    .voted {
+      background-color: #ccc; /* 灰色表示已投票 */
+      color: #fff;
+      cursor: not-allowed;
+    }
+  </style>
 </head>
 <body>
-  <!-- 您的网页内容 -->
-    <h1>投票</h1>
-      <!-- 问题1 -->
-      <p>第一次嚟華基堂？</p>
-      <button onclick="vote('q1', '是')">是</button>
-      <button onclick="vote('q1', '否')">否</button>
+  <h1>投票</h1>
 
+  <!-- 问题1 -->
+  <p>第一次嚟華基堂？</p>
+  <button id="q1-yes" onclick="vote('q1', '是', 'q1-yes')">是</button>
+  <button id="q1-no" onclick="vote('q1', '否', 'q1-no')">否</button>
+  <p id="q1-msg"></p> <!-- 用於顯示投票結果信息 -->
 
-      <!-- 问题2 -->
-      <p>係咪基督徒？</p>
-      <button onclick="vote('q2', '是')">是</button>
-      <button onclick="vote('q2', '否')">否</button>
+  <!-- 问题2 -->
+  <p>係咪基督徒？</p>
+  <button id="q2-yes" onclick="vote('q2', '是', 'q2-yes')">是</button>
+  <button id="q2-no" onclick="vote('q2', '否', 'q2-no')">否</button>
+  <p id="q2-msg"></p>
 
+  <!-- 问题3 -->
+  <p>有冇喺社交媒體 (IG、Facebook) Post過相？</p>
+  <button id="q3-yes" onclick="vote('q3', '是', 'q3-yes')">是</button>
+  <button id="q3-no" onclick="vote('q3', '否', 'q3-no')">否</button>
+  <p id="q3-msg"></p>
 
-      <!-- 问题3 -->
-      <p>有冇喺社交媒體 (IG、Facebook) Post過相？</p>
-      <button onclick="vote('q3', '是')">是</button>
-      <button onclick="vote('q3', '否')">否</button>
+  <!-- 问题4 -->
+  <p>通常 Post 乜嘢？</p>
+  <button id="q4-selfie" onclick="vote('q4', '自拍', 'q4-selfie')">自拍</button>
+  <button id="q4-food" onclick="vote('q4', '美食', 'q4-food')">美食</button>
+  <button id="q4-landscape" onclick="vote('q4', '風景', 'q4-landscape')">風景</button>
+  <button id="q4-children" onclick="vote('q4', '仔女', 'q4-children')">仔女</button>
+  <p id="q4-msg"></p>
 
-
-      <!-- 问题4 -->
-      <p>通常 Post 乜嘢？</p>
-      <button onclick="vote('q4', '自拍')">自拍</button>
-      <button onclick="vote('q4', '美食')">美食</button>
-      <button onclick="vote('q4', '風景')">風景</button>
-      <button onclick="vote('q4', '仔女')">仔女</button>
-
-
-      <!-- 问题5 -->
-      <p>Post有自己樣嘅相，有冇用Filter？</p>
-      <button onclick="vote('q5', '是')">是</button>
-      <button onclick="vote('q5', '否')">否</button>
-
+  <!-- 问题5 -->
+  <p>Post有自己樣嘅相，有冇用Filter？</p>
+  <button id="q5-yes" onclick="vote('q5', '是', 'q5-yes')">是</button>
+  <button id="q5-no" onclick="vote('q5', '否', 'q5-no')">否</button>
+  <p id="q5-msg"></p>
 
   <!-- Firebase SDK和您的脚本 -->
   <script type="module">
     // 导入Firebase核心和数据库函数
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-    import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
+    import { getDatabase, ref, runTransaction } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
 
-    // 您的Firebase配置
+    // Firebase配置
     const firebaseConfig = {
-  apiKey: "AIzaSyCRol5-bfvuLJ_Tl3HzhE1_JfzIU837wsk",
-  authDomain: "livepollingapp.firebaseapp.com",
-  databaseURL: "https://livepollingapp-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "livepollingapp",
-  storageBucket: "livepollingapp.appspot.com",
-  messagingSenderId: "512425859331",
-  appId: "1:512425859331:web:4e8e84385defd5637cf136",
-  measurementId: "G-EDJ488Y4JK"
+      apiKey: "AIzaSyCRol5-bfvuLJ_Tl3HzhE1_JfzIU837wsk",
+      authDomain: "livepollingapp.firebaseapp.com",
+      databaseURL: "https://livepollingapp-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "livepollingapp",
+      storageBucket: "livepollingapp.appspot.com",
+      messagingSenderId: "512425859331",
+      appId: "1:512425859331:web:4e8e84385defd5637cf136",
+      measurementId: "G-EDJ488Y4JK"
     };
 
-  // 初始化Firebase
-  const app = initializeApp(firebaseConfig);
-  const database = getDatabase(app);
+    // 初始化Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
 
-  // 投票函数
-  window.vote = function(questionId, option) {
-    const pollRef = ref(database, 'polls/' + questionId + '/' + option);
+    // 投票函数
+    window.vote = function(questionId, option, buttonId) {
+      const pollRef = ref(database, 'polls/' + questionId + '/' + option);
 
-    runTransaction(pollRef, (currentVotes) => {
-      return (currentVotes || 0) + 1;
-    }).then(() => {
-      console.log('投票成功！');
-    }).catch((error) => {
-      console.error('投票失败：', error);
-    });
-  }
-
-  // 创建结果监听函数
-  function setupResultListener(questionId) {
-    const resultsDiv = document.getElementById('results-' + questionId);
-    const resultsRef = ref(database, 'polls/' + questionId);
-
-    onValue(resultsRef, (snapshot) => {
-      const data = snapshot.val();
-      resultsDiv.innerHTML = '';
-      if (data) {
-        for (let option in data) {
-          resultsDiv.innerHTML += `<p>${option}: ${data[option]} 票</p>`;
-        }
-      } else {
-        resultsDiv.innerHTML = '<p>暂无投票结果。</p>';
-      }
-    });
-  }
-
-  // 为每个问题设置结果监听器
-  setupResultListener('q1');
-  setupResultListener('q2');
-  setupResultListener('q3');
-  setupResultListener('q4');
-  setupResultListener('q5');
-</script>
+      runTransaction(pollRef, (currentVotes) => {
+        return (currentVotes || 0) + 1;
+      }).then(() => {
+        console.log('投票成功！');
+        // 顯示投票成功的消息
+        document.getElementById(questionId + '-msg').innerText = '投票成功！';
+        // 將按鈕設為深色，並禁用按鈕
+        document.getElementById(buttonId).classList.add('voted');
+        document.getElementById(buttonId).disabled = true;
+      }).catch((error) => {
+        console.error('投票失败：', error);
+      });
+    }
+  </script>
 </body>
 </html>
