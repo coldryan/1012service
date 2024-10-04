@@ -5,9 +5,13 @@
   <title>投票</title>
   <style>
     .voted {
-      background-color: #ccc; /* 灰色表示已投票 */
-      color: #fff;
+      background-color: #4caf50; /* 綠色表示已投票 */
+      color: white;
       cursor: not-allowed;
+    }
+    .voted:disabled {
+      background-color: #4caf50;
+      color: white;
     }
   </style>
 </head>
@@ -16,34 +20,34 @@
 
   <!-- 问题1 -->
   <p>第一次嚟華基堂？</p>
-  <button id="q1-yes" onclick="vote('q1', '是', 'q1-yes')">是</button>
-  <button id="q1-no" onclick="vote('q1', '否', 'q1-no')">否</button>
+  <button id="q1-yes" onclick="vote('q1', '是', 'q1-yes', 'q1-msg')">是</button>
+  <button id="q1-no" onclick="vote('q1', '否', 'q1-no', 'q1-msg')">否</button>
   <p id="q1-msg"></p> <!-- 用於顯示投票結果信息 -->
 
   <!-- 问题2 -->
   <p>係咪基督徒？</p>
-  <button id="q2-yes" onclick="vote('q2', '是', 'q2-yes')">是</button>
-  <button id="q2-no" onclick="vote('q2', '否', 'q2-no')">否</button>
+  <button id="q2-yes" onclick="vote('q2', '是', 'q2-yes', 'q2-msg')">是</button>
+  <button id="q2-no" onclick="vote('q2', '否', 'q2-no', 'q2-msg')">否</button>
   <p id="q2-msg"></p>
 
   <!-- 问题3 -->
   <p>有冇喺社交媒體 (IG、Facebook) Post過相？</p>
-  <button id="q3-yes" onclick="vote('q3', '是', 'q3-yes')">是</button>
-  <button id="q3-no" onclick="vote('q3', '否', 'q3-no')">否</button>
+  <button id="q3-yes" onclick="vote('q3', '是', 'q3-yes', 'q3-msg')">是</button>
+  <button id="q3-no" onclick="vote('q3', '否', 'q3-no', 'q3-msg')">否</button>
   <p id="q3-msg"></p>
 
   <!-- 问题4 -->
   <p>通常 Post 乜嘢？</p>
-  <button id="q4-selfie" onclick="vote('q4', '自拍', 'q4-selfie')">自拍</button>
-  <button id="q4-food" onclick="vote('q4', '美食', 'q4-food')">美食</button>
-  <button id="q4-landscape" onclick="vote('q4', '風景', 'q4-landscape')">風景</button>
-  <button id="q4-children" onclick="vote('q4', '仔女', 'q4-children')">仔女</button>
+  <button id="q4-selfie" onclick="vote('q4', '自拍', 'q4-selfie', 'q4-msg')">自拍</button>
+  <button id="q4-food" onclick="vote('q4', '美食', 'q4-food', 'q4-msg')">美食</button>
+  <button id="q4-landscape" onclick="vote('q4', '風景', 'q4-landscape', 'q4-msg')">風景</button>
+  <button id="q4-children" onclick="vote('q4', '仔女', 'q4-children', 'q4-msg')">仔女</button>
   <p id="q4-msg"></p>
 
   <!-- 问题5 -->
   <p>Post有自己樣嘅相，有冇用Filter？</p>
-  <button id="q5-yes" onclick="vote('q5', '是', 'q5-yes')">是</button>
-  <button id="q5-no" onclick="vote('q5', '否', 'q5-no')">否</button>
+  <button id="q5-yes" onclick="vote('q5', '是', 'q5-yes', 'q5-msg')">是</button>
+  <button id="q5-no" onclick="vote('q5', '否', 'q5-no', 'q5-msg')">否</button>
   <p id="q5-msg"></p>
 
   <!-- Firebase SDK和您的脚本 -->
@@ -69,18 +73,18 @@
     const database = getDatabase(app);
 
     // 投票函数
-    window.vote = function(questionId, option, buttonId) {
+    window.vote = function(questionId, option, buttonId, messageId) {
       const pollRef = ref(database, 'polls/' + questionId + '/' + option);
 
       runTransaction(pollRef, (currentVotes) => {
         return (currentVotes || 0) + 1;
       }).then(() => {
-        console.log('投票成功！');
         // 顯示投票成功的消息
-        document.getElementById(questionId + '-msg').innerText = '投票成功！';
+        document.getElementById(messageId).innerText = '投票成功！';
         // 將按鈕設為深色，並禁用按鈕
-        document.getElementById(buttonId).classList.add('voted');
-        document.getElementById(buttonId).disabled = true;
+        const button = document.getElementById(buttonId);
+        button.classList.add('voted');
+        button.disabled = true;
       }).catch((error) => {
         console.error('投票失败：', error);
       });
