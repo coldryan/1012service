@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>情緒反應投票</title>
+  <title>情緒反應投票 (Q6)</title>
   <style>
     .voted {
       background-color: #4caf50; /* 綠色表示已投票 */
@@ -13,11 +13,20 @@
       background-color: #4caf50;
       color: white;
     }
+    /* 設置圖片大小 */
+    .question-image {
+      max-width: 100%; /* 圖片最大寬度為頁面寬度 */
+      height: auto; /* 高度自動調整，保持圖片比例 */
+    }
   </style>
 </head>
 <body>
   <h1>當人面對黑暗，內心有咩情緒反應？</h1>
 
+  <!-- 插入圖片 -->
+  <img src="https://coldryan.github.io/1012service/Q2.jpeg" alt="問題的相關圖片" class="question-image">
+
+  <!-- 投票選項 -->
   <button id="q6-happy" onclick="vote('q6', '快樂', 'q6-happy', 'q6-msg')">快樂</button>
   <button id="q6-sad" onclick="vote('q6', '傷心', 'q6-sad', 'q6-msg')">傷心</button>
   <button id="q6-surprised" onclick="vote('q6', '驚訝', 'q6-surprised', 'q6-msg')">驚訝</button>
@@ -25,9 +34,6 @@
   <button id="q6-angry" onclick="vote('q6', '生氣', 'q6-angry', 'q6-msg')">生氣</button>
   <button id="q6-disgust" onclick="vote('q6', '噁心', 'q6-disgust', 'q6-msg')">噁心</button>
   <p id="q6-msg"></p>
-
- <!-- 延遲20秒後啟用的連結按鈕 -->
- <button id="next-question-btn" class="disabled-button" disabled>前往下一個問題 (Q7)</button>
 
   <!-- Firebase SDK和您的脚本 -->
   <script type="module">
@@ -52,36 +58,4 @@
     const database = getDatabase(app);
 
     // 投票函数
-    window.vote = function(questionId, option, buttonId, messageId) {
-      const pollRef = ref(database, 'polls/' + questionId + '/' + option);
-
-      runTransaction(pollRef, (currentVotes) => {
-        return (currentVotes || 0) + 1;
-      }).then(() => {
-        // 顯示投票成功的消息
-        document.getElementById(messageId).innerText = '投票成功！';
-        // 將按鈕設為深色，並禁用按鈕
-        const button = document.getElementById(buttonId);
-        button.classList.add('voted');
-        button.disabled = true;
-      }).catch((error) => {
-        console.error('投票失败：', error);
-      });
-    }
-  </script>
-
-<script>
-  // 延遲 20 秒後啟用按鈕
-  setTimeout(() => {
-    const nextQuestionBtn = document.getElementById('next-question-btn');
-    nextQuestionBtn.classList.remove('disabled-button');
-    nextQuestionBtn.disabled = false;
-    nextQuestionBtn.innerText = '前往下一個問題 (Q7)';
-    nextQuestionBtn.onclick = function() {
-      window.location.href = 'question_q7.html'; // 指向 Q7 的 HTML 頁面
-    };
-  }, 20000); // 20秒後啟用按鈕
-</script>
-
-</body>
-</html>
+    window.vote = function(questionId, option,​⬤
