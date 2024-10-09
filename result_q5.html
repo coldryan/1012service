@@ -65,13 +65,15 @@
 
           // 調用函數顯示圓餅圖
           displayPieChart(labels, votes);
+        } else {
+          console.log('無數據顯示');
         }
       });
     }
 
     // 顯示圓餅圖的函數
     function displayPieChart(labels, votes) {
-      const ctx = document.getElementById('q9-result-chart').getContext('2d');
+      const ctx = document.getElementById('q7-result-chart').getContext('2d');
       const myPieChart = new Chart(ctx, {
         type: 'pie',
         data: {
