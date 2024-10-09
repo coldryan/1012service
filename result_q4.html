@@ -2,13 +2,37 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>耶穌有無驚過？ - 結果</title>
+  <title>「暴風雨晚上選擇」投票結果</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- 引入Chart.js -->
+  <style>
+    .voted {
+      background-color: #4caf50; /* 綠色表示已投票 */
+      color: white;
+      cursor: not-allowed;
+    }
+    .voted:disabled {
+      background-color: #4caf50;
+      color: white;
+    }
+    /* 設置圖片大小 */
+    .question-image {
+      max-width: 100%; /* 圖片最大寬度為頁面寬度 */
+      height: auto; /* 高度自動調整，保持圖片比例 */
+    }
+    canvas {
+      width: 200px !important; /* 調整 canvas 寬度 */
+      height: 200px !important; /* 調整 canvas 高度 */
+    }
+  </style>
 </head>
 <body>
-  <h1>耶穌有無驚過？ - 結果</h1>
-     <!-- 插入圖片 -->
-     <img src="https://coldryan.github.io/1012service/Q4.jpeg" alt="問題的相關圖片" class="question-image">
-  <div id="q7-results"></div>
+  <h1>「暴風雨晚上選擇」投票結果</h1>
+
+  <!-- 插入圖片 -->
+  <img src="https://coldryan.github.io/1012service/Q4.jpeg" alt="問題的相關圖片" class="question-image">
+
+  <!-- 圓餅圖的畫布 -->
+  <canvas id="q7-result-chart" width="200" height="200"></canvas>
 
   <!-- Firebase SDK和您的脚本 -->
   <script type="module">
@@ -34,24 +58,54 @@
 
     // 创建结果监听函数
     function setupResultListener(questionId) {
-      const resultsDiv = document.getElementById('q7-results');
       const resultsRef = ref(database, 'polls/' + questionId);
 
       onValue(resultsRef, (snapshot) => {
         const data = snapshot.val();
-        resultsDiv.innerHTML = '';
         if (data) {
+          const labels = [];
+          const votes = [];
+
+          // 從Firebase數據中提取投票結果
           for (let option in data) {
-            resultsDiv.innerHTML += `<p>${option}: ${data[option]} 票</p>`;
+            labels.push(option); // 將選項作為標籤
+            votes.push(data[option]); // 將票數作為數據
           }
-        } else {
-          resultsDiv.innerHTML = '<p>暂无投票结果。</p>';
+
+          // 調用函數顯示圓餅圖
+          displayPieChart(labels, votes);
+        }
+      });
+    }
+
+    // 顯示圓餅圖的函數
+    function displayPieChart(labels, votes) {
+      const ctx = document.getElementById('q7-result-chart').getContext('2d');
+      const myPieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: labels, // 圓餅圖的標籤（投票選項）
+          datasets: [{
+            data: votes, // 投票數據
+            backgroundColor: [
+              '#FF6384',
+              '#36A2EB',
+              '#FFCE56',
+              '#4BC0C0',
+              '#9966FF',
+              '#FF9F40'
+            ] // 各部分的顏色
+          }]
+        },
+        options: {
+          responsive: false // 禁用響應式
         }
       });
     }
 
     // 设置监听器显示投票结果
-    setupResultListener('q7');
+    setupResultListener('q7'); // 顯示q7的結果
   </script>
+
 </body>
 </html>
