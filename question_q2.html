@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>投票 (Q2)</title>
+  <style>
+    .voted {
+      background-color: #4caf50; /* 綠色表示已投票 */
+      color: white;
+      cursor: not-allowed;
+    }
+    .voted:disabled {
+      background-color: #4caf50;
+      color: white;
+    }
+    /* 設置圖片大小 */
+    .question-image {
+      max-width: 100%; /* 圖片最大寬度為頁面寬度 */
+      height: auto; /* 高度自動調整，保持圖片比例 */
+    }
+  </style>
+</head>
+<body>
+  <h1>圖中睇唔睇到「左邊」嗰人想用刀/尖咀物去攻擊「右邊」嘅人？</h1>
+
+  <!-- 插入圖片 -->
+  <img src="https://coldryan.github.io/1012service/Q2.jpeg" alt="問題的相關圖片" class="question-image">
+
+  <!-- 投票選項 -->
+  <button id="q8-yes" onclick="vote('q8', '睇到', 'q8-yes', 'q8-msg')">睇到</button>
+  <button id="q8-no" onclick="vote('q8', '睇唔到', 'q8-no', 'q8-msg')">睇唔到</button>
+  <p id="q8-msg"></p>
+
+  <!-- Firebase SDK和您的脚本 -->
+  <script type="module">
+    // 导入Firebase核心和数据库函数
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+    import { getDatabase, ref, runTransaction } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
+
+    // Firebase配置
+    const firebaseConfig = {
+      apiKey: "AIzaSyCRol5-bfvuLJ_Tl3HzhE1_JfzIU837wsk",
+      authDomain: "livepollingapp.firebaseapp.com",
+      databaseURL: "https://livepollingapp-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "livepollingapp",
+      storageBucket: "livepollingapp.appspot.com",
+      messagingSenderId: "512425859331",
+      appId: "1:512425859331:web:4e8e84385defd5637cf136",
+      measurementId: "G-EDJ488Y4JK"
+    };
+
+    // 初始化Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    // 投票函数
+    window.vote = function(questionId, option,​⬤

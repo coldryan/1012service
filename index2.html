@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>投票结果</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- 引入Chart.js -->
   <style>
     .question-image {
       max-width: 100%; /* 圖片最大寬度為頁面寬度 */
@@ -73,7 +74,7 @@
             resultsDiv.innerHTML += `<p>${option}: ${data[option]} 票</p>`;
           }
         } else {
-          resultsDiv.innerHTML = '<p>暂无投票结果。</p>';
+          resultsDiv.innerHTML = '<p>暫時未有結果。</p>';
         }
       });
     }
