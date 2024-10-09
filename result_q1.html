@@ -10,29 +10,31 @@
       height: auto; /* 自動調整高度以保持比例 */
       margin-bottom: 20px; /* 讓圖片與其他內容有些間距 */
     }
+
+    canvas {
+      width: 200px !important;  /* 設定canvas寬度 */
+      height: 200px !important; /* 設定canvas高度 */
+    }
   </style>
 </head>
 <body>
   <h1>投票結果</h1>
 
-  <!-- 插入圖片 -->
-  <img src="https://coldryan.github.io/1012service/Q1.jpeg" alt="問題的相關圖片" class="question-image">
-
   <!-- Canvas for Pie Charts -->
   <h2>第一次嚟華基堂？</h2>
-  <canvas id="chart-q1" width="400" height="400"></canvas>
+  <canvas id="chart-q1" width="200" height="200"></canvas>
 
   <h2>係咪基督徒？</h2>
-  <canvas id="chart-q2" width="400" height="400"></canvas>
+  <canvas id="chart-q2" width="200" height="200"></canvas>
 
   <h2>有冇喺社交媒體 (IG、Facebook) Post過相？</h2>
-  <canvas id="chart-q3" width="400" height="400"></canvas>
+  <canvas id="chart-q3" width="200" height="200"></canvas>
 
   <h2>通常 Post 乜嘢？</h2>
-  <canvas id="chart-q4" width="400" height="400"></canvas>
+  <canvas id="chart-q4" width="200" height="200"></canvas>
 
   <h2>Post有自己樣嘅相，有冇用Filter？</h2>
-  <canvas id="chart-q5" width="400" height="400"></canvas>
+  <canvas id="chart-q5" width="200" height="200"></canvas>
 
   <!-- Firebase SDK和脚本 -->
   <script type="module">
@@ -74,7 +76,10 @@
               '#FF9F40'
             ],
             hoverOffset: 4
-          }]
+          }],
+        },
+        options: {
+          responsive: false, // 禁用響應式，以便使用固定大小
         }
       });
     }
