@@ -85,6 +85,7 @@
 
       onValue(resultsRef, (snapshot) => {
         const data = snapshot.val();
+        console.log('Data for ' + questionId, data); // 調試輸出，查看接收到的數據
         const labels = [];
         const votes = [];
 
@@ -96,6 +97,8 @@
 
           // 生成圓餅圖
           displayPieChart(questionId, labels, votes);
+        } else {
+          console.log("No data available for question: " + questionId);
         }
       });
     }
