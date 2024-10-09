@@ -31,7 +31,7 @@
 
     // 重置所有投票结果的函数
     window.resetVotes = function() {
-      const pollQuestions = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7'];
+      const pollQuestions = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7','q8'];
 
       pollQuestions.forEach((questionId) => {
         const questionRef = ref(database, 'polls/' + questionId);

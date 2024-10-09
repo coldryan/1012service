@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>投票结果</title>
+  <title>投票結果</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- 引入Chart.js -->
   <style>
     .question-image {
@@ -13,31 +13,26 @@
   </style>
 </head>
 <body>
-  <h1>投票结果</h1>
+  <h1>投票結果</h1>
 
   <!-- 插入圖片 -->
   <img src="https://coldryan.github.io/1012service/Q1.jpeg" alt="問題的相關圖片" class="question-image">
 
-  <!-- 显示问题1的结果 -->
+  <!-- Canvas for Pie Charts -->
   <h2>第一次嚟華基堂？</h2>
-  <div id="results-q1"></div>
+  <canvas id="chart-q1" width="400" height="400"></canvas>
 
-  <!-- 显示问题2的结果 -->
   <h2>係咪基督徒？</h2>
-  <div id="results-q2"></div>
+  <canvas id="chart-q2" width="400" height="400"></canvas>
 
-  <!-- 显示问题3的结果 -->
   <h2>有冇喺社交媒體 (IG、Facebook) Post過相？</h2>
-  <div id="results-q3"></div>
+  <canvas id="chart-q3" width="400" height="400"></canvas>
 
-   <!-- 问题4 -->
-   <h2>通常 Post 乜嘢？</h2>
-   <div id="results-q4"></div>
+  <h2>通常 Post 乜嘢？</h2>
+  <canvas id="chart-q4" width="400" height="400"></canvas>
 
-
-   <!-- 问题5 -->
-   <h2>Post有自己樣嘅相，有冇用Filter？</h2>
-   <div id="results-q5"></div>
+  <h2>Post有自己樣嘅相，有冇用Filter？</h2>
+  <canvas id="chart-q5" width="400" height="400"></canvas>
 
   <!-- Firebase SDK和脚本 -->
   <script type="module">
@@ -61,20 +56,46 @@
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
 
-    // 显示投票结果函数
+    // 顯示圓餅圖的函數
+    function displayPieChart(questionId, labels, dataValues) {
+      const ctx = document.getElementById('chart-' + questionId).getContext('2d');
+      const chart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: labels,
+          datasets: [{
+            data: dataValues,
+            backgroundColor: [
+              '#FF6384',
+              '#36A2EB',
+              '#FFCE56',
+              '#4BC0C0',
+              '#9966FF',
+              '#FF9F40'
+            ],
+            hoverOffset: 4
+          }]
+        }
+      });
+    }
+
+    // 监听投票结果并生成图表
     function setupResultListener(questionId) {
-      const resultsDiv = document.getElementById('results-' + questionId);
       const resultsRef = ref(database, 'polls/' + questionId);
 
       onValue(resultsRef, (snapshot) => {
         const data = snapshot.val();
-        resultsDiv.innerHTML = '';
+        const labels = [];
+        const votes = [];
+
         if (data) {
           for (let option in data) {
-            resultsDiv.innerHTML += `<p>${option}: ${data[option]} 票</p>`;
+            labels.push(option); // 每個選項
+            votes.push(data[option]); // 每個選項的票數
           }
-        } else {
-          resultsDiv.innerHTML = '<p>暫時未有結果。</p>';
+
+          // 生成圓餅圖
+          displayPieChart(questionId, labels, votes);
         }
       });
     }
