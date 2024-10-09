@@ -2,17 +2,23 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>投票 (Q2)結果</title>
+  <title>投票 (Q2) 結果</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- 引入Chart.js -->
+  <style>
+    canvas {
+      width: 200px !important; /* 設定canvas寬度 */
+      height: 200px !important; /* 設定canvas高度 */
+    }
+  </style>
 </head>
 <body>
   <h1>圖中睇唔睇到「左邊」嗰人想用刀/尖咀物去攻擊「右邊」嘅人？ - 結果</h1>
 
-    <!-- 插入圖片 -->
-    <img src="https://coldryan.github.io/1012service/Q2.jpeg" alt="問題的相關圖片" class="question-image">
+  <!-- 插入圖片 -->
+  <img src="https://coldryan.github.io/1012service/Q2.jpeg" alt="問題的相關圖片" class="question-image">
 
   <!-- 圓餅圖的畫布 -->
-  <canvas id="q8-result-chart" width="400" height="400"></canvas>
+  <canvas id="q8-result-chart" width="200" height="200"></canvas>
 
   <!-- Firebase SDK和您的脚本 -->
   <script type="module">
@@ -78,13 +84,13 @@
           }]
         },
         options: {
-          responsive: true
+          responsive: false // 禁用響應式
         }
       });
     }
 
     // 设置监听器显示投票结果
-    setupResultListener('q8'); // 顯示q2的結果
+    setupResultListener('q8'); // 顯示q8的結果
   </script>
 </body>
 </html>
