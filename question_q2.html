@@ -54,4 +54,23 @@
     const database = getDatabase(app);
 
     // 投票函数
-    window.vote = function(questionId, option,​⬤
+    window.vote = function(questionId, option, buttonId, messageId) {
+      const pollRef = ref(database, 'polls/' + questionId + '/' + option);
+
+      runTransaction(pollRef, (currentVotes) => {
+        return (currentVotes || 0) + 1;
+      }).then(() => {
+        // 顯示投票成功的消息
+        document.getElementById(messageId).innerText = '投票成功！';
+        // 將按鈕設為深色，並禁用按鈕
+        const button = document.getElementById(buttonId);
+        button.classList.add('voted');
+        button.disabled = true;
+      }).catch((error) => {
+        console.error('投票失败：', error);
+      });
+    }
+  </script>
+
+</body>
+</html>
