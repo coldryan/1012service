@@ -13,14 +13,23 @@
       background-color: #4caf50;
       color: white;
     }
+    /* 圖片樣式 */
+    .question-image {
+      max-width: 100%; /* 圖片最大寬度 */
+      height: auto; /* 保持圖片比例 */
+      margin-bottom: 20px; /* 在圖片和問題之間留些空隙 */
+    }
   </style>
 </head>
 <body>
   <h1>耶穌有無驚過？</h1>
 
-  <button id="q7-yes" onclick="vote('q7', '有', 'q7-yes', 'q7-msg')">有</button>
-  <button id="q7-no" onclick="vote('q7', '冇', 'q7-no', 'q7-msg')">冇</button>
-  <p id="q7-msg"></p>
+  <!-- 插入圖片 -->
+  <img src="https://coldryan.github.io/1012service/Q5.jpeg"  alt="耶穌有無驚過" class="question-image">
+
+  <button id="q9-yes" onclick="vote('q9', '有', 'q9-yes', 'q9-msg')">有</button>
+  <button id="q9-no" onclick="vote('q9', '冇', 'q9-no', 'q9-msg')">冇</button>
+  <p id="q9-msg"></p>
 
   <!-- Firebase SDK和您的脚本 -->
   <script type="module">
@@ -63,6 +72,5 @@
     }
   </script>
 
-  
 </body>
 </html>
