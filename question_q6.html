@@ -24,7 +24,7 @@
   <h1>當人面對黑暗，內心有咩情緒反應？</h1>
 
   <!-- 插入圖片 -->
-  <img src="https://coldryan.github.io/1012service/Q3.jpeg" alt="問題的相關圖片" class="question-image">
+  <img src="https://coldryan.github.io/1012service/Q2.jpeg" alt="問題的相關圖片" class="question-image">
 
   <!-- 投票選項 -->
   <button id="q6-happy" onclick="vote('q6', '快樂', 'q6-happy', 'q6-msg')">快樂</button>
@@ -57,5 +57,25 @@
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
 
-    // 投票函数
-    window.vote = function(questionId, option,​⬤
+   // 投票函数
+   window.vote = function(questionId, option, buttonId, messageId) {
+      const pollRef = ref(database, 'polls/' + questionId + '/' + option);
+
+      runTransaction(pollRef, (currentVotes) => {
+        return (currentVotes || 0) + 1;
+      }).then(() => {
+        // 顯示投票成功的消息
+        document.getElementById(messageId).innerText = '投票成功！';
+        // 將按鈕設為深色，並禁用按鈕
+        const button = document.getElementById(buttonId);
+        button.classList.add('voted');
+        button.disabled = true;
+      }).catch((error) => {
+        console.error('投票失败：', error);
+      });
+    }
+  </script>
+
+  
+</body>
+</html>
