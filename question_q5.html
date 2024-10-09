@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>耶穌有無驚過？投票</title>
+  <style>
+    .voted {
+      background-color: #4caf50; /* 綠色表示已投票 */
+      color: white;
+      cursor: not-allowed;
+    }
+    .voted:disabled {
+      background-color: #4caf50;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>耶穌有無驚過？</h1>
+
+  <button id="q7-yes" onclick="vote('q7', '有', 'q7-yes', 'q7-msg')">有</button>
+  <button id="q7-no" onclick="vote('q7', '冇', 'q7-no', 'q7-msg')">冇</button>
+  <p id="q7-msg"></p>
+
+  <!-- Firebase SDK和您的脚本 -->
+  <script type="module">
+    // 导入Firebase核心和数据库函数
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+    import { getDatabase, ref, runTransaction } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
+
+    // Firebase配置
+    const firebaseConfig = {
+      apiKey: "AIzaSyCRol5-bfvuLJ_Tl3HzhE1_JfzIU837wsk",
+      authDomain: "livepollingapp.firebaseapp.com",
+      databaseURL: "https://livepollingapp-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "livepollingapp",
+      storageBucket: "livepollingapp.appspot.com",
+      messagingSenderId: "512425859331",
+      appId: "1:512425859331:web:4e8e84385defd5637cf136",
+      measurementId: "G-EDJ488Y4JK"
+    };
+
+    // 初始化Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    // 投票函数
+    window.vote = function(questionId, option, buttonId, messageId) {
+      const pollRef = ref(database, 'polls/' + questionId + '/' + option);
+
+      runTransaction(pollRef, (currentVotes) => {
+        return (currentVotes || 0) + 1;
+      }).then(() => {
+        // 顯示投票成功的消息
+        document.getElementById(messageId).innerText = '投票成功！';
+        // 將按鈕設為深色，並禁用按鈕
+        const button = document.getElementById(buttonId);
+        button.classList.add('voted');
+        button.disabled = true;
+      }).catch((error) => {
+        console.error('投票失败：', error);
+      });
+    }
+  </script>
+
+  
+</body>
+</html>

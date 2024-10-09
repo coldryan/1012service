@@ -57,9 +57,6 @@
   <button id="q5-no" onclick="vote('q5', '冇', 'q5-no', 'q5-msg')">冇</button>
   <p id="q5-msg"></p>
 
- <!-- 延遲20秒後啟用的連結按鈕 -->
- <button id="next-question-btn" class="disabled-button" disabled>前往下一個問題 (Q6)</button>
-
   <!-- Firebase SDK和您的脚本 -->
   <script type="module">
     // 导入Firebase核心和数据库函数
@@ -99,19 +96,6 @@
         console.error('投票失败：', error);
       });
     }
-  </script>
-
-  <script>
-    // 延遲 20 秒後啟用按鈕
-    setTimeout(() => {
-      const nextQuestionBtn = document.getElementById('next-question-btn');
-      nextQuestionBtn.classList.remove('disabled-button');
-      nextQuestionBtn.disabled = false;
-      nextQuestionBtn.innerText = '前往下一個問題 (Q6)';
-      nextQuestionBtn.onclick = function() {
-        window.location.href = 'question_q6.html'; // 指向 Q6 的 HTML 頁面
-      };
-    }, 20000); // 20秒後啟用按鈕
   </script>
 
 </body>
