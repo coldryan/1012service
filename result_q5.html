@@ -23,7 +23,7 @@
   <img src="https://coldryan.github.io/1012service/Q5.jpeg" alt="耶穌有無驚過" class="question-image">
 
   <!-- 圓餅圖的畫布 -->
-  <canvas id="q7-result-chart" width="200" height="200"></canvas>
+  <canvas id="q9-result-chart" width="200" height="200"></canvas>
 
   <!-- Firebase SDK和您的脚本 -->
   <script type="module">
@@ -73,7 +73,7 @@
 
     // 顯示圓餅圖的函數
     function displayPieChart(labels, votes) {
-      const ctx = document.getElementById('q7-result-chart').getContext('2d');
+      const ctx = document.getElementById('q9-result-chart').getContext('2d');
       const myPieChart = new Chart(ctx, {
         type: 'pie',
         data: {
@@ -97,7 +97,7 @@
     }
 
     // 设置监听器显示投票结果
-    setupResultListener('q7'); // 顯示q7的結果
+    setupResultListener('q9'); // 顯示q9的結果
   </script>
 
 </body>
