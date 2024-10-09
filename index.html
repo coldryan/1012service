@@ -13,41 +13,48 @@
       background-color: #4caf50;
       color: white;
     }
+    .question-image {
+      max-width: 100%; /* 圖片最大寬度為頁面寬度 */
+      height: auto; /* 自動調整高度以保持比例 */
+      margin-bottom: 20px; /* 讓圖片與其他內容有些間距 */
+    }
   </style>
 </head>
 <body>
   <h1>投票</h1>
 
+  <!-- 插入圖片 -->
+  <img src="https://coldryan.github.io/1012service/Q1.jpeg" alt="問題的相關圖片" class="question-image">
+
   <!-- 问题1 -->
   <p>第一次嚟華基堂？</p>
-  <button id="q1-yes" onclick="vote('q1', '是', 'q1-yes', 'q1-msg')">是</button>
-  <button id="q1-no" onclick="vote('q1', '否', 'q1-no', 'q1-msg')">否</button>
+  <button id="q1-yes" onclick="vote('q1', '係', 'q1-yes', 'q1-msg')">係</button>
+  <button id="q1-no" onclick="vote('q1', '唔係', 'q1-no', 'q1-msg')">唔係</button>
   <p id="q1-msg"></p> <!-- 用於顯示投票結果信息 -->
 
   <!-- 问题2 -->
   <p>係咪基督徒？</p>
-  <button id="q2-yes" onclick="vote('q2', '是', 'q2-yes', 'q2-msg')">是</button>
-  <button id="q2-no" onclick="vote('q2', '否', 'q2-no', 'q2-msg')">否</button>
+  <button id="q2-yes" onclick="vote('q2', '係', 'q2-yes', 'q2-msg')">係</button>
+  <button id="q2-no" onclick="vote('q2', '唔係', 'q2-no', 'q2-msg')">唔係</button>
   <p id="q2-msg"></p>
 
   <!-- 问题3 -->
   <p>有冇喺社交媒體 (IG、Facebook) Post過相？</p>
-  <button id="q3-yes" onclick="vote('q3', '是', 'q3-yes', 'q3-msg')">是</button>
-  <button id="q3-no" onclick="vote('q3', '否', 'q3-no', 'q3-msg')">否</button>
+  <button id="q3-yes" onclick="vote('q3', '有', 'q3-yes', 'q3-msg')">有</button>
+  <button id="q3-no" onclick="vote('q3', '冇', 'q3-no', 'q3-msg')">冇</button>
   <p id="q3-msg"></p>
 
   <!-- 问题4 -->
   <p>通常 Post 乜嘢？</p>
   <button id="q4-selfie" onclick="vote('q4', '自拍', 'q4-selfie', 'q4-msg')">自拍</button>
-  <button id="q4-food" onclick="vote('q4', '美食', 'q4-food', 'q4-msg')">美食</button>
+  <button id="q4-food" onclick="vote('q4', '食物', 'q4-food', 'q4-msg')">食物</button>
   <button id="q4-landscape" onclick="vote('q4', '風景', 'q4-landscape', 'q4-msg')">風景</button>
-  <button id="q4-children" onclick="vote('q4', '仔女', 'q4-children', 'q4-msg')">仔女</button>
   <p id="q4-msg"></p>
 
   <!-- 问题5 -->
   <p>Post有自己樣嘅相，有冇用Filter？</p>
-  <button id="q5-yes" onclick="vote('q5', '是', 'q5-yes', 'q5-msg')">是</button>
-  <button id="q5-no" onclick="vote('q5', '否', 'q5-no', 'q5-msg')">否</button>
+  <button id="q5-yes" onclick="vote('q5', '有', 'q5-yes', 'q5-msg')">有</button>
+  <button id="q5-no" onclick="vote('q5', '冇', 'q5-no', 'q5-msg')">冇</button>
   <p id="q5-msg"></p>
 
  <!-- 延遲20秒後啟用的連結按鈕 -->
@@ -94,18 +101,18 @@
     }
   </script>
 
-<script>
-  // 延遲 20 秒後啟用按鈕
-  setTimeout(() => {
-    const nextQuestionBtn = document.getElementById('next-question-btn');
-    nextQuestionBtn.classList.remove('disabled-button');
-    nextQuestionBtn.disabled = false;
-    nextQuestionBtn.innerText = '前往下一個問題 (Q6)';
-    nextQuestionBtn.onclick = function() {
-      window.location.href = 'question_q6.html'; // 指向 Q6 的 HTML 頁面
-    };
-  }, 20000); // 20秒後啟用按鈕
-</script>
+  <script>
+    // 延遲 20 秒後啟用按鈕
+    setTimeout(() => {
+      const nextQuestionBtn = document.getElementById('next-question-btn');
+      nextQuestionBtn.classList.remove('disabled-button');
+      nextQuestionBtn.disabled = false;
+      nextQuestionBtn.innerText = '前往下一個問題 (Q6)';
+      nextQuestionBtn.onclick = function() {
+        window.location.href = 'question_q6.html'; // 指向 Q6 的 HTML 頁面
+      };
+    }, 20000); // 20秒後啟用按鈕
+  </script>
 
 </body>
 </html>
