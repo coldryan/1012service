@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>「耶穌有無驚過？」投票</title>
+  <title>投票</title>
   <style>
     .voted {
       background-color: #4caf50; /* 綠色表示已投票 */
@@ -22,13 +22,15 @@
   </style>
 </head>
 <body>
-  <h1>耶穌有無驚過？</h1>
+  <h1>一個暴風雨嘅晚上，你開住一架車， 經過車站見到三個人好焦急咁等緊車：
+    一個係臨死嘅老人；一個係你嘅救命恩人； 一個係你嘅夢中情人。你架車只能再坐多一個，你會點選擇？？</h1>
 
   <!-- 插入圖片 -->
   <img src="https://coldryan.github.io/1012service/Q4.jpeg" alt="問題的相關圖片" class="question-image">
 
-  <button id="q7-yes" onclick="vote('q7', '有', 'q7-yes', 'q7-msg')">有</button>
-  <button id="q7-no" onclick="vote('q7', '冇', 'q7-no', 'q7-msg')">冇</button>
+  <button id="q7-oldman" onclick="vote('q7', '臨死嘅老人', 'q7-oldman', 'q7-msg')">臨死嘅老人</button>
+  <button id="q7-savior" onclick="vote('q7', '救命恩人', 'q7-savior', 'q7-msg')">救命恩人</button>
+  <button id="q7-lover" onclick="vote('q7', '夢中情人', 'q7-lover', 'q7-msg')">夢中情人</button>
   <p id="q7-msg"></p>
 
   <!-- Firebase SDK和您的脚本 -->
